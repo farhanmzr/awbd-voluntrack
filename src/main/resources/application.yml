@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: volunteer-management-platform
+  profiles:
+    active: dev
