@@ -16,6 +16,26 @@
     <a th:href="@{/admin/events/create}">Create New Event</a>
     <br><br>
 
+    <form method="get" th:action="@{/admin/events}">
+        <label for="sortField">Sort by:</label>
+        <select name="sortField" id="sortField">
+            <option value="title" th:selected="${sortField == 'title'}">Title</option>
+            <option value="startDateTime" th:selected="${sortField == 'startDateTime'}">Start Date</option>
+            <option value="status" th:selected="${sortField == 'status'}">Status</option>
+            <option value="capacity" th:selected="${sortField == 'capacity'}">Capacity</option>
+        </select>
+    
+        <label for="sortDir">Direction:</label>
+        <select name="sortDir" id="sortDir">
+            <option value="asc" th:selected="${sortDir == 'asc'}">Ascending</option>
+            <option value="desc" th:selected="${sortDir == 'desc'}">Descending</option>
+        </select>
+    
+        <button type="submit">Apply</button>
+    </form>
+    
+    <br>
+
     <div th:if="${param.deleteError}">
         <p style="color:red;">This event cannot be deleted because it already has registrations.</p>
     </div>
@@ -65,6 +85,25 @@
             </tbody>
         </table>
     </div>
+
+    <br>
+    
+    <div th:if="${totalPages > 1}">
+        <span th:if="${currentPage > 0}">
+            <a th:href="@{/admin/events(page=${currentPage - 1}, size=5, sortField=${sortField}, sortDir=${sortDir})}">
+                Previous
+            </a>
+        </span>
+    
+        <span th:text="' Page ' + (${currentPage} + 1) + ' of ' + ${totalPages} + ' '"></span>
+    
+        <span th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/admin/events(page=${currentPage + 1}, size=5, sortField=${sortField}, sortDir=${sortDir})}">
+                Next
+            </a>
+        </span>
+    </div>
+    
 </body>
 
 </html>

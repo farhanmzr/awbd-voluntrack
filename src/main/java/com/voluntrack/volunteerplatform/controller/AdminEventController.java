@@ -45,9 +45,26 @@ public class AdminEventController {
     }
 
     @GetMapping
-    public String listEvents(Model model) {
-        model.addAttribute("events",
-                eventService.findAll(org.springframework.data.domain.Pageable.unpaged()).getContent());
+    public String listEvents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "startDateTime") String sortField,
+            @RequestParam(defaultValue = "asc") String sortDir,
+            Model model) {
+        org.springframework.data.domain.Sort sort = sortDir.equalsIgnoreCase("asc")
+                ? org.springframework.data.domain.Sort.by(sortField).ascending()
+                : org.springframework.data.domain.Sort.by(sortField).descending();
+
+        org.springframework.data.domain.Page<Event> eventPage = eventService.findAll(
+                org.springframework.data.domain.PageRequest.of(page, size, sort));
+
+        model.addAttribute("eventPage", eventPage);
+        model.addAttribute("events", eventPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", eventPage.getTotalPages());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+
         return "admin/events/list";
     }
 

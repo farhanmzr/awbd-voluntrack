@@ -1,7 +1,6 @@
 package com.voluntrack.volunteerplatform.controller;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,14 +25,24 @@ public class EventController {
     public String listEvents(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            Model model
-    ) {
-        Page<Event> eventPage = eventService.findAll(PageRequest.of(page, size));
+            @RequestParam(defaultValue = "startDateTime") String sortField,
+            @RequestParam(defaultValue = "asc") String sortDir,
+            Model model) {
+        org.springframework.data.domain.Sort sort = sortDir.equalsIgnoreCase("asc")
+                ? org.springframework.data.domain.Sort.by(sortField).ascending()
+                : org.springframework.data.domain.Sort.by(sortField).descending();
+
+        Page<Event> eventPage = eventService.findAll(
+                org.springframework.data.domain.PageRequest.of(page, size, sort));
 
         model.addAttribute("eventPage", eventPage);
         model.addAttribute("events", eventPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", eventPage.getTotalPages());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
         return "events/list";
     }

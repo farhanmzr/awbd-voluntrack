@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event List - Volunteer Management Platform</title>
 </head>
+
 <body>
     <h1>Volunteer Events</h1>
 
     <a th:href="@{/}">Back to Home</a>
     <br><br>
+
+    <form method="get" th:action="@{/events}">
+        <label for="sortField">Sort by:</label>
+        <select name="sortField" id="sortField">
+            <option value="title" th:selected="${sortField == 'title'}">Title</option>
+            <option value="startDateTime" th:selected="${sortField == 'startDateTime'}">Start Date</option>
+            <option value="status" th:selected="${sortField == 'status'}">Status</option>
+            <option value="capacity" th:selected="${sortField == 'capacity'}">Capacity</option>
+        </select>
+
+        <label for="sortDir">Direction:</label>
+        <select name="sortDir" id="sortDir">
+            <option value="asc" th:selected="${sortDir == 'asc'}">Ascending</option>
+            <option value="desc" th:selected="${sortDir == 'desc'}">Descending</option>
+        </select>
+
+        <button type="submit">Apply</button>
+    </form>
+
+    <br>
 
     <div th:if="${#lists.isEmpty(events)}">
         <p>No events available yet.</p>
@@ -38,14 +60,19 @@
 
     <div th:if="${totalPages > 1}">
         <span th:if="${currentPage > 0}">
-            <a th:href="@{/events(page=${currentPage - 1}, size=5)}">Previous</a>
+            <a th:href="@{/events(page=${currentPage - 1}, size=5, sortField=${sortField}, sortDir=${sortDir})}">
+                Previous
+            </a>
         </span>
 
         <span th:text="' Page ' + (${currentPage} + 1) + ' of ' + ${totalPages} + ' '"></span>
 
         <span th:if="${currentPage < totalPages - 1}">
-            <a th:href="@{/events(page=${currentPage + 1}, size=5)}">Next</a>
+            <a th:href="@{/events(page=${currentPage + 1}, size=5, sortField=${sortField}, sortDir=${sortDir})}">
+                Next
+            </a>
         </span>
     </div>
 </body>
+
 </html>

@@ -23,6 +23,18 @@
         <button type="submit">Filter</button>
     </form>
 
+    <label for="sortField">Sort by:</label>
+    <select name="sortField" id="sortField">
+        <option value="registrationDate" th:selected="${sortField == 'registrationDate'}">Registration Date</option>
+        <option value="status" th:selected="${sortField == 'status'}">Status</option>
+    </select>
+    
+    <label for="sortDir">Direction:</label>
+    <select name="sortDir" id="sortDir">
+        <option value="asc" th:selected="${sortDir == 'asc'}">Ascending</option>
+        <option value="desc" th:selected="${sortDir == 'desc'}">Descending</option>
+    </select>
+
     <br>
 
     <div th:if="${#lists.isEmpty(registrations)}">
@@ -72,13 +84,19 @@
 
     <div th:if="${totalPages > 1}">
         <span th:if="${currentPage > 0}">
-            <a th:href="@{/admin/registrations(page=${currentPage - 1}, size=10, status=${selectedStatus})}">Previous</a>
+            <a
+                th:href="@{/admin/registrations(page=${currentPage - 1}, size=10, status=${selectedStatus}, sortField=${sortField}, sortDir=${sortDir})}">
+                Previous
+            </a>
         </span>
 
         <span th:text="' Page ' + (${currentPage} + 1) + ' of ' + ${totalPages} + ' '"></span>
 
         <span th:if="${currentPage < totalPages - 1}">
-            <a th:href="@{/admin/registrations(page=${currentPage + 1}, size=10, status=${selectedStatus})}">Next</a>
+            <a
+                th:href="@{/admin/registrations(page=${currentPage + 1}, size=10, status=${selectedStatus}, sortField=${sortField}, sortDir=${sortDir})}">
+                Next
+            </a>
         </span>
     </div>
 </body>
