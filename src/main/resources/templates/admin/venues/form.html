@@ -19,11 +19,19 @@
             <input type="text" id="name" th:field="*{name}" required>
         </div>
 
+        <div th:if="${#fields.hasErrors('name')}" style="color:red;">
+            <p th:errors="*{name}"></p>
+        </div>
+
         <br>
 
         <div>
             <label for="address">Address:</label><br>
             <input type="text" id="address" th:field="*{address}" required>
+        </div>
+
+        <div th:if="${#fields.hasErrors('address')}" style="color:red;">
+            <p th:errors="*{address}"></p>
         </div>
 
         <br>
@@ -33,11 +41,19 @@
             <input type="text" id="city" th:field="*{city}" required>
         </div>
 
+        <div th:if="${#fields.hasErrors('city')}" style="color:red;">
+            <p th:errors="*{city}"></p>
+        </div>
+
         <br>
 
         <div>
             <label for="description">Description:</label><br>
             <textarea id="description" th:field="*{description}" rows="4" cols="50"></textarea>
+        </div>
+
+        <div th:if="${#fields.hasErrors('description')}" style="color:red;">
+            <p th:errors="*{description}"></p>
         </div>
 
         <br>

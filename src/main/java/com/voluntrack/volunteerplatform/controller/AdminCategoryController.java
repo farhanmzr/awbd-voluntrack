@@ -2,6 +2,7 @@ package com.voluntrack.volunteerplatform.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.voluntrack.volunteerplatform.entity.Category;
 import com.voluntrack.volunteerplatform.service.CategoryService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/admin/categories")
@@ -35,7 +38,14 @@ public class AdminCategoryController {
     }
 
     @PostMapping("/save")
-    public String saveCategory(@ModelAttribute Category category) {
+    public String saveCategory(@Valid @ModelAttribute("category") Category category,
+                           BindingResult bindingResult,
+                           Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("formAction", "/admin/categories/save");
+            return "admin/categories/form";
+        }
+
         categoryService.save(category);
         return "redirect:/admin/categories";
     }

@@ -1,10 +1,18 @@
 package com.voluntrack.volunteerplatform.controller;
 
-import com.voluntrack.volunteerplatform.entity.Venue;
-import com.voluntrack.volunteerplatform.service.VenueService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.voluntrack.volunteerplatform.entity.Venue;
+import com.voluntrack.volunteerplatform.service.VenueService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/admin/venues")
@@ -30,7 +38,14 @@ public class AdminVenueController {
     }
 
     @PostMapping("/save")
-    public String saveVenue(@ModelAttribute Venue venue) {
+    public String saveVenue(@Valid @ModelAttribute("venue") Venue venue,
+                        BindingResult bindingResult,
+                        Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("formAction", "/admin/venues/save");
+            return "admin/venues/form";
+        }
+
         venueService.save(venue);
         return "redirect:/admin/venues";
     }

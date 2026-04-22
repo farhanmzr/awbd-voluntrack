@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Category Form</title>
 </head>
+
 <body>
     <h1 th:text="${category.id == null} ? 'Create Category' : 'Edit Category'">Category Form</h1>
 
@@ -19,11 +21,19 @@
             <input type="text" id="name" th:field="*{name}" required>
         </div>
 
+        <div th:if="${#fields.hasErrors('name')}" style="color:red;">
+            <p th:errors="*{name}"></p>
+        </div>
+
         <br>
 
         <div>
             <label for="description">Description:</label><br>
             <textarea id="description" th:field="*{description}" rows="4" cols="50"></textarea>
+        </div>
+        
+        <div th:if="${#fields.hasErrors('description')}" style="color:red;">
+            <p th:errors="*{description}"></p>
         </div>
 
         <br>
@@ -31,4 +41,5 @@
         <button type="submit">Save</button>
     </form>
 </body>
+
 </html>

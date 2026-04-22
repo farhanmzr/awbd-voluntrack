@@ -21,11 +21,19 @@
             <input type="text" id="title" th:field="*{title}" required>
         </div>
 
+        <div th:if="${#fields.hasErrors('title')}" style="color:red;">
+            <p th:errors="*{title}"></p>
+        </div>
+
         <br>
 
         <div>
             <label for="description">Description:</label><br>
             <textarea id="description" th:field="*{description}" rows="4" cols="50" required></textarea>
+        </div>
+
+        <div th:if="${#fields.hasErrors('description')}" style="color:red;">
+            <p th:errors="*{description}"></p>
         </div>
 
         <br>
@@ -37,6 +45,10 @@
                 required>
         </div>
 
+        <div th:if="${#fields.hasErrors('startDateTime')}" style="color:red;">
+            <p th:errors="*{startDateTime}"></p>
+        </div>
+
         <br>
 
         <div>
@@ -46,11 +58,19 @@
                 required>
         </div>
 
+        <div th:if="${#fields.hasErrors('endDateTime')}" style="color:red;">
+            <p th:errors="*{endDateTime}"></p>
+        </div>
+
         <br>
 
         <div>
             <label for="capacity">Capacity:</label><br>
             <input type="number" id="capacity" th:field="*{capacity}" min="1" required>
+        </div>
+
+        <div th:if="${#fields.hasErrors('capacity')}" style="color:red;">
+            <p th:errors="*{capacity}"></p>
         </div>
 
         <br>
@@ -61,6 +81,10 @@
                 <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}">
                 </option>
             </select>
+        </div>
+
+        <div th:if="${#fields.hasErrors('status')}" style="color:red;">
+            <p th:errors="*{status}"></p>
         </div>
 
         <br>

@@ -3,6 +3,7 @@ package com.voluntrack.volunteerplatform.controller;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,8 @@ import com.voluntrack.volunteerplatform.service.EventService;
 import com.voluntrack.volunteerplatform.service.UserService;
 import com.voluntrack.volunteerplatform.service.VenueService;
 
+import jakarta.validation.Valid;
+
 @Controller
 @RequestMapping("/admin/events")
 public class AdminEventController {
@@ -30,10 +33,10 @@ public class AdminEventController {
     private final RegistrationRepository registrationRepository;
 
     public AdminEventController(EventService eventService,
-                                CategoryService categoryService,
-                                VenueService venueService,
-                                UserService userService,
-                                RegistrationRepository registrationRepository) {
+            CategoryService categoryService,
+            VenueService venueService,
+            UserService userService,
+            RegistrationRepository registrationRepository) {
         this.eventService = eventService;
         this.categoryService = categoryService;
         this.venueService = venueService;
@@ -43,7 +46,8 @@ public class AdminEventController {
 
     @GetMapping
     public String listEvents(Model model) {
-        model.addAttribute("events", eventService.findAll(org.springframework.data.domain.Pageable.unpaged()).getContent());
+        model.addAttribute("events",
+                eventService.findAll(org.springframework.data.domain.Pageable.unpaged()).getContent());
         return "admin/events/list";
     }
 
@@ -58,43 +62,53 @@ public class AdminEventController {
     }
 
     @PostMapping("/save")
-    public String saveEvent(@ModelAttribute Event event,
-                        @RequestParam Long categoryId,
-                        @RequestParam Long venueId,
-                        Authentication authentication) {
+    public String saveEvent(@Valid @ModelAttribute("event") Event event,
+            BindingResult bindingResult,
+            @RequestParam Long categoryId,
+            @RequestParam Long venueId,
+            Authentication authentication,
+            Model model) {
 
-    String username = authentication.getName();
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryService.findAll());
+            model.addAttribute("venues", venueService.findAll());
+            model.addAttribute("statuses", EventStatus.values());
+            model.addAttribute("formAction", "/admin/events/save");
+            return "admin/events/form";
+        }
 
-    User adminUser = userService.findByUsername(username)
-            .orElseThrow(() -> new IllegalArgumentException("Authenticated user not found"));
+        String username = authentication.getName();
 
-    Event eventToSave;
+        User adminUser = userService.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Authenticated user not found"));
 
-    if (event.getId() != null) {
-        Event existingEvent = eventService.findById(event.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + event.getId()));
+        Event eventToSave;
 
-        existingEvent.setTitle(event.getTitle());
-        existingEvent.setDescription(event.getDescription());
-        existingEvent.setStartDateTime(event.getStartDateTime());
-        existingEvent.setEndDateTime(event.getEndDateTime());
-        existingEvent.setCapacity(event.getCapacity());
-        existingEvent.setStatus(event.getStatus());
-        existingEvent.setCategory(categoryService.findById(categoryId)
-                .orElseThrow(() -> new IllegalArgumentException("Category not found")));
-        existingEvent.setVenue(venueService.findById(venueId)
-                .orElseThrow(() -> new IllegalArgumentException("Venue not found")));
+        if (event.getId() != null) {
+            Event existingEvent = eventService.findById(event.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + event.getId()));
 
-        eventToSave = existingEvent;
-    } else {
-        event.setCreatedBy(adminUser);
-        event.setCategory(categoryService.findById(categoryId)
-                .orElseThrow(() -> new IllegalArgumentException("Category not found")));
-        event.setVenue(venueService.findById(venueId)
-                .orElseThrow(() -> new IllegalArgumentException("Venue not found")));
+            existingEvent.setTitle(event.getTitle());
+            existingEvent.setDescription(event.getDescription());
+            existingEvent.setStartDateTime(event.getStartDateTime());
+            existingEvent.setEndDateTime(event.getEndDateTime());
+            existingEvent.setCapacity(event.getCapacity());
+            existingEvent.setStatus(event.getStatus());
+            existingEvent.setCategory(categoryService.findById(categoryId)
+                    .orElseThrow(() -> new IllegalArgumentException("Category not found")));
+            existingEvent.setVenue(venueService.findById(venueId)
+                    .orElseThrow(() -> new IllegalArgumentException("Venue not found")));
 
-        eventToSave = event;
-    }
+            eventToSave = existingEvent;
+        } else {
+            event.setCreatedBy(adminUser);
+            event.setCategory(categoryService.findById(categoryId)
+                    .orElseThrow(() -> new IllegalArgumentException("Category not found")));
+            event.setVenue(venueService.findById(venueId)
+                    .orElseThrow(() -> new IllegalArgumentException("Venue not found")));
+
+            eventToSave = event;
+        }
 
         eventService.save(eventToSave);
 
