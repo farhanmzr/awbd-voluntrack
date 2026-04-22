@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event List - Volunteer Management Platform</title>
+</head>
+<body>
+    <h1>Volunteer Events</h1>
+
+    <a th:href="@{/}">Back to Home</a>
+    <br><br>
+
+    <div th:if="${#lists.isEmpty(events)}">
+        <p>No events available yet.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(events)}">
+        <div th:each="event : ${events}" style="border:1px solid #ccc; padding:15px; margin-bottom:15px;">
+            <h3 th:text="${event.title}">Event Title</h3>
+            <p th:text="${event.description}">Event description</p>
+            <p>
+                <strong>Status:</strong>
+                <span th:text="${event.status}">OPEN</span>
+            </p>
+            <p>
+                <strong>Capacity:</strong>
+                <span th:text="${event.capacity}">0</span>
+            </p>
+            <p>
+                <strong>Start:</strong>
+                <span th:text="${event.startDateTime}">2026-01-01T10:00</span>
+            </p>
+
+            <a th:href="@{/events/{id}(id=${event.id})}">View Details</a>
+        </div>
+    </div>
+
+    <div th:if="${totalPages > 1}">
+        <span th:if="${currentPage > 0}">
+            <a th:href="@{/events(page=${currentPage - 1}, size=5)}">Previous</a>
+        </span>
+
+        <span th:text="' Page ' + (${currentPage} + 1) + ' of ' + ${totalPages} + ' '"></span>
+
+        <span th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/events(page=${currentPage + 1}, size=5)}">Next</a>
+        </span>
+    </div>
+</body>
+</html>
