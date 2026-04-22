@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Venues</title>
+</head>
+<body>
+    <h1>Manage Venues</h1>
+
+    <a th:href="@{/}">Back to Home</a>
+    <br><br>
+
+    <a th:href="@{/admin/venues/create}">Create New Venue</a>
+    <br><br>
+
+    <div th:if="${#lists.isEmpty(venues)}">
+        <p>No venues found.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(venues)}">
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="venue : ${venues}">
+                    <td th:text="${venue.id}">1</td>
+                    <td th:text="${venue.name}">Venue Name</td>
+                    <td th:text="${venue.address}">Address</td>
+                    <td th:text="${venue.city}">City</td>
+                    <td th:text="${venue.description}">Description</td>
+                    <td>
+                        <a th:href="@{/admin/venues/edit/{id}(id=${venue.id})}">Edit</a>
+                        |
+                        <a th:href="@{/admin/venues/delete/{id}(id=${venue.id})}"
+                           onclick="return confirm('Are you sure you want to delete this venue?');">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

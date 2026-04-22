@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venue Form</title>
+</head>
+<body>
+    <h1 th:text="${venue.id == null} ? 'Create Venue' : 'Edit Venue'">Venue Form</h1>
+
+    <a th:href="@{/admin/venues}">Back to Venue List</a>
+    <br><br>
+
+    <form th:action="@{${formAction}}" th:object="${venue}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <div>
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" th:field="*{name}" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="address">Address:</label><br>
+            <input type="text" id="address" th:field="*{address}" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="city">City:</label><br>
+            <input type="text" id="city" th:field="*{city}" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="description">Description:</label><br>
+            <textarea id="description" th:field="*{description}" rows="4" cols="50"></textarea>
+        </div>
+
+        <br>
+
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>
