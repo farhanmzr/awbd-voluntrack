@@ -46,9 +46,10 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         Role adminRole = createRoleIfNotExists("ADMIN");
-        createRoleIfNotExists("USER");
+        Role userRole = createRoleIfNotExists("USER");
 
         User adminUser = createAdminIfNotExists(adminRole);
+        createRegularUserIfNotExists(userRole);
 
         Category environmentCategory = createCategoryIfNotExists(
                 "Environment",
@@ -104,6 +105,25 @@ public class DataInitializer implements CommandLineRunner {
         admin.setRole(adminRole);
 
         return userRepository.save(admin);
+    }
+
+    private User createRegularUserIfNotExists(Role userRole) {
+        String username = "volunteer1";
+        String email = "volunteer1@voluntrack.com";
+
+        Optional<User> existingUser = userRepository.findByUsername(username);
+        if (existingUser.isPresent()) {
+            return existingUser.get();
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode("user123"));
+        user.setEnabled(true);
+        user.setRole(userRole);
+
+        return userRepository.save(user);
     }
 
     private Category createCategoryIfNotExists(String name, String description) {

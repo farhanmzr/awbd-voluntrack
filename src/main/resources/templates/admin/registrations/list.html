@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Registrations</title>
+</head>
+<body>
+    <h1>Manage Registrations</h1>
+
+    <a th:href="@{/}">Back to Home</a>
+    <br><br>
+
+    <form method="get" th:action="@{/admin/registrations}">
+        <label for="status">Filter by Status:</label>
+        <select name="status" id="status">
+            <option value="PENDING" th:selected="${selectedStatus.name() == 'PENDING'}">PENDING</option>
+            <option value="APPROVED" th:selected="${selectedStatus.name() == 'APPROVED'}">APPROVED</option>
+            <option value="REJECTED" th:selected="${selectedStatus.name() == 'REJECTED'}">REJECTED</option>
+            <option value="CANCELLED" th:selected="${selectedStatus.name() == 'CANCELLED'}">CANCELLED</option>
+            <option value="ATTENDED" th:selected="${selectedStatus.name() == 'ATTENDED'}">ATTENDED</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <br>
+
+    <div th:if="${#lists.isEmpty(registrations)}">
+        <p>No registrations found for this status.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(registrations)}">
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Event</th>
+                    <th>Status</th>
+                    <th>Registration Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="registration : ${registrations}">
+                    <td th:text="${registration.id}">1</td>
+                    <td th:text="${registration.user.username}">username</td>
+                    <td th:text="${registration.event.title}">event title</td>
+                    <td th:text="${registration.status}">PENDING</td>
+                    <td th:text="${registration.registrationDate}">2026-01-01T10:00</td>
+                    <td>
+                        <form th:if="${registration.status.name() == 'PENDING'}"
+                              th:action="@{/admin/registrations/{id}/approve(id=${registration.id})}"
+                              method="post"
+                              style="display:inline;">
+                            <button type="submit">Approve</button>
+                        </form>
+
+                        <form th:if="${registration.status.name() == 'PENDING'}"
+                              th:action="@{/admin/registrations/{id}/reject(id=${registration.id})}"
+                              method="post"
+                              style="display:inline;">
+                            <button type="submit">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+
+    <div th:if="${totalPages > 1}">
+        <span th:if="${currentPage > 0}">
+            <a th:href="@{/admin/registrations(page=${currentPage - 1}, size=10, status=${selectedStatus})}">Previous</a>
+        </span>
+
+        <span th:text="' Page ' + (${currentPage} + 1) + ' of ' + ${totalPages} + ' '"></span>
+
+        <span th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/admin/registrations(page=${currentPage + 1}, size=10, status=${selectedStatus})}">Next</a>
+        </span>
+    </div>
+</body>
+</html>

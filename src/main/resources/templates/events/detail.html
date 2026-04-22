@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Detail - Volunteer Management Platform</title>
 </head>
+
 <body>
     <h1>Event Detail</h1>
 
@@ -52,5 +54,14 @@
         <strong>City:</strong>
         <span th:text="${event.venue.city}">City</span>
     </p>
+    <br>
+
+    <form th:action="@{/registrations/join/{id}(id=${event.id})}" method="post">
+        <button type="submit">Join Event</button>
+    </form>
+
+    <br>
+    <a th:href="@{/registrations/my}">My Registrations</a>
+    
 </body>
 </html>

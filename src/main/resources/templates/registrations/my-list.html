@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Registrations</title>
+</head>
+<body>
+    <h1>My Registrations</h1>
+
+    <a th:href="@{/events}">Back to Events</a>
+    <br><br>
+
+    <div th:if="${#lists.isEmpty(registrations)}">
+        <p>You have not joined any events yet.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(registrations)}">
+        <div th:each="registration : ${registrations}" style="border:1px solid #ccc; padding:15px; margin-bottom:15px;">
+            <h3 th:text="${registration.event.title}">Event Title</h3>
+            <p>
+                <strong>Status:</strong>
+                <span th:text="${registration.status}">PENDING</span>
+            </p>
+            <p>
+                <strong>Registration Date:</strong>
+                <span th:text="${registration.registrationDate}">2026-01-01T10:00</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
