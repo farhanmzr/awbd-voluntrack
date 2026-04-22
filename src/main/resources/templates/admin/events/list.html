@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Events</title>
+</head>
+
+<body>
+    <h1>Manage Events</h1>
+
+    <a th:href="@{/}">Back to Home</a>
+    <br><br>
+
+    <a th:href="@{/admin/events/create}">Create New Event</a>
+    <br><br>
+
+    <div th:if="${param.deleteError}">
+        <p style="color:red;">This event cannot be deleted because it already has registrations.</p>
+    </div>
+
+    <div th:if="${param.deleted}">
+        <p style="color:green;">Event deleted successfully.</p>
+    </div>
+
+    <div th:if="${#lists.isEmpty(events)}">
+        <p>No events found.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(events)}">
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Capacity</th>
+                    <th>Category</th>
+                    <th>Venue</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="event : ${events}">
+                    <td th:text="${event.id}">1</td>
+                    <td th:text="${event.title}">Event Title</td>
+                    <td th:text="${event.status}">OPEN</td>
+                    <td th:text="${event.capacity}">10</td>
+                    <td th:text="${event.category.name}">Category</td>
+                    <td th:text="${event.venue.name}">Venue</td>
+                    <td th:text="${event.startDateTime}">2026-01-01T10:00</td>
+                    <td th:text="${event.endDateTime}">2026-01-01T12:00</td>
+                    <td>
+                        <a th:href="@{/admin/events/edit/{id}(id=${event.id})}">Edit</a>
+                        |
+                        <a th:href="@{/admin/events/delete/{id}(id=${event.id})}"
+                            onclick="return confirm('Are you sure you want to delete this event?');">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
