@@ -54,4 +54,24 @@ public class EventServiceImpl implements EventService {
     public Page<Event> searchByTitle(String keyword, Pageable pageable) {
         return eventRepository.findByTitleContainingIgnoreCase(keyword, pageable);
     }
+
+    @Override
+    public Page<Event> searchAndFilter(String keyword, Long categoryId, Pageable pageable) {
+        boolean hasKeyword = keyword != null && !keyword.trim().isEmpty();
+        boolean hasCategory = categoryId != null;
+
+        if (hasKeyword && hasCategory) {
+            return eventRepository.findByTitleContainingIgnoreCaseAndCategoryId(keyword.trim(), categoryId, pageable);
+        }
+
+        if (hasKeyword) {
+            return eventRepository.findByTitleContainingIgnoreCase(keyword.trim(), pageable);
+        }
+
+        if (hasCategory) {
+            return eventRepository.findByCategoryId(categoryId, pageable);
+        }
+
+        return eventRepository.findAll(pageable);
+    }
 }

@@ -14,23 +14,46 @@
     <br><br>
 
     <form method="get" th:action="@{/events}">
-        <label for="sortField">Sort by:</label>
-        <select name="sortField" id="sortField">
-            <option value="title" th:selected="${sortField == 'title'}">Title</option>
-            <option value="startDateTime" th:selected="${sortField == 'startDateTime'}">Start Date</option>
-            <option value="status" th:selected="${sortField == 'status'}">Status</option>
-            <option value="capacity" th:selected="${sortField == 'capacity'}">Capacity</option>
-        </select>
-
-        <label for="sortDir">Direction:</label>
-        <select name="sortDir" id="sortDir">
-            <option value="asc" th:selected="${sortDir == 'asc'}">Ascending</option>
-            <option value="desc" th:selected="${sortDir == 'desc'}">Descending</option>
-        </select>
-
+        <div>
+            <label for="keyword">Search by title:</label>
+            <input type="text" id="keyword" name="keyword" th:value="${keyword}">
+        </div>
+    
+        <br>
+    
+        <div>
+            <label for="categoryId">Filter by category:</label>
+            <select name="categoryId" id="categoryId">
+                <option value="">All Categories</option>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"
+                    th:selected="${categoryId != null and categoryId == category.id}">
+                </option>
+            </select>
+        </div>
+    
+        <br>
+    
+        <div>
+            <label for="sortField">Sort by:</label>
+            <select name="sortField" id="sortField">
+                <option value="title" th:selected="${sortField == 'title'}">Title</option>
+                <option value="startDateTime" th:selected="${sortField == 'startDateTime'}">Start Date</option>
+                <option value="status" th:selected="${sortField == 'status'}">Status</option>
+                <option value="capacity" th:selected="${sortField == 'capacity'}">Capacity</option>
+            </select>
+    
+            <label for="sortDir">Direction:</label>
+            <select name="sortDir" id="sortDir">
+                <option value="asc" th:selected="${sortDir == 'asc'}">Ascending</option>
+                <option value="desc" th:selected="${sortDir == 'desc'}">Descending</option>
+            </select>
+        </div>
+    
+        <br>
+    
         <button type="submit">Apply</button>
     </form>
-
+    
     <br>
 
     <div th:if="${#lists.isEmpty(events)}">
@@ -60,7 +83,8 @@
 
     <div th:if="${totalPages > 1}">
         <span th:if="${currentPage > 0}">
-            <a th:href="@{/events(page=${currentPage - 1}, size=5, sortField=${sortField}, sortDir=${sortDir})}">
+            <a
+                th:href="@{/events(page=${currentPage - 1}, size=5, sortField=${sortField}, sortDir=${sortDir}, keyword=${keyword}, categoryId=${categoryId})}">
                 Previous
             </a>
         </span>
@@ -68,7 +92,8 @@
         <span th:text="' Page ' + (${currentPage} + 1) + ' of ' + ${totalPages} + ' '"></span>
 
         <span th:if="${currentPage < totalPages - 1}">
-            <a th:href="@{/events(page=${currentPage + 1}, size=5, sortField=${sortField}, sortDir=${sortDir})}">
+            <a
+                th:href="@{/events(page=${currentPage + 1}, size=5, sortField=${sortField}, sortDir=${sortDir}, keyword=${keyword}, categoryId=${categoryId})}">
                 Next
             </a>
         </span>

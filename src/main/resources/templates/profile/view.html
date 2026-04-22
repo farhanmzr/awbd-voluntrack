@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>My Profile</title>
+</head>
+
+<body>
+
+    <h1>My Profile</h1>
+
+    <a th:href="@{/}">Back to Home</a>
+    <br><br>
+
+    <div>
+        <p><strong>Full Name:</strong> <span th:text="${profile.fullName}">-</span></p>
+        <p><strong>Phone:</strong> <span th:text="${profile.phoneNumber}">-</span></p>
+        <p><strong>City:</strong> <span th:text="${profile.city}">-</span></p>
+        <p><strong>Bio:</strong> <span th:text="${profile.bio}">-</span></p>
+    </div>
+
+    <br>
+
+    <a th:href="@{/profile/edit}">Edit Profile</a>
+
+</body>
+
+</html>

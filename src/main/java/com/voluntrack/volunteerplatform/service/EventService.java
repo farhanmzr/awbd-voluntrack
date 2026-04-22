@@ -22,4 +22,6 @@ public interface EventService {
     Page<Event> findByCategoryId(Long categoryId, Pageable pageable);
 
     Page<Event> searchByTitle(String keyword, Pageable pageable);
+
+    Page<Event> searchAndFilter(String keyword, Long categoryId, Pageable pageable);
 }
