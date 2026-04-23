@@ -1,29 +1,54 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volunteer Management Platform</title>
-</head>
+<head th:replace="~{fragments/head :: head('Volunteer Management Platform')}"></head>
 
 <body>
-    <h1>Volunteer Management Platform</h1>
-    <p>Project setup is running successfully.</p>
 
-    <a th:href="@{/events}">View Events</a>
-    <br><br>
-    <a th:href="@{/profile}">My Profile</a>
-    <br><br>
-    <a th:href="@{/login}">Login</a>
-    <br><br>
-    <a th:href="@{/admin/registrations}">Manage Registrations (Admin)</a>
-    <br><br>
-    <a th:href="@{/admin/categories}">Manage Categories (Admin)</a>
-    <br><br>
-    <a th:href="@{/admin/venues}">Manage Venues (Admin)</a>
-    <br><br>
-    <a th:href="@{/admin/events}">Manage Events (Admin)</a>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container py-5">
+        <div class="p-5 mb-4 bg-light rounded-3 border">
+            <div class="container-fluid py-4">
+                <h1 class="display-5 fw-bold">Volunteer Management Platform</h1>
+                <p class="col-md-8 fs-5">
+                    A simple platform to manage volunteer events, registrations, and participant activity.
+                </p>
+
+                <a class="btn btn-primary btn-lg me-2" th:href="@{/events}">Browse Events</a>
+                <a class="btn btn-outline-secondary btn-lg" th:href="@{/login}">Login</a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">For Volunteers</h5>
+                        <p class="card-text">
+                            Explore volunteer opportunities, join events, and track your registrations.
+                        </p>
+                        <a class="btn btn-outline-primary" th:href="@{/registrations/my}">My Registrations</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">For Admins</h5>
+                        <p class="card-text">
+                            Manage categories, venues, events, and registration approvals from one place.
+                        </p>
+                        <a class="btn btn-outline-dark" th:href="@{/admin/events}">Admin Panel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer-scripts :: scripts}"></div>
+
 </body>
 
 </html>

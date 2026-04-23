@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" th:fragment="adminNavbar">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/admin/dashboard}">Admin Panel</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/events}">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/categories}">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/venues}">Venues</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/registrations}">Registrations</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2">
+                    <a class="btn btn-outline-light btn-sm" th:href="@{/}">Public Site</a>
+
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+</body>
+
+</html>
