@@ -1,45 +1,58 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Category Form</title>
-</head>
+<head th:replace="~{fragments/head :: head('Category Form')}"></head>
 
 <body>
-    <h1 th:text="${category.id == null} ? 'Create Category' : 'Edit Category'">Category Form</h1>
 
-    <a th:href="@{/admin/categories}">Back to Category List</a>
-    <br><br>
+    <div th:replace="~{fragments/admin-navbar :: adminNavbar}"></div>
 
-    <form th:action="@{${formAction}}" th:object="${category}" method="post">
-        <input type="hidden" th:field="*{id}">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h1 class="mb-4" th:text="${category.id == null} ? 'Create Category' : 'Edit Category'">
+                            Category Form
+                        </h1>
 
-        <div>
-            <label for="name">Name:</label><br>
-            <input type="text" id="name" th:field="*{name}" required>
+                        <a class="btn btn-outline-secondary btn-sm mb-4" th:href="@{/admin/categories}">
+                            Back to Category List
+                        </a>
+
+                        <form th:action="@{${formAction}}" th:object="${category}" method="post">
+                            <input type="hidden" th:field="*{id}">
+
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" id="name" th:field="*{name}" class="form-control" required>
+                                <div th:if="${#fields.hasErrors('name')}" class="text-danger mt-1">
+                                    <small th:errors="*{name}"></small>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea id="description" th:field="*{description}" class="form-control"
+                                    rows="4"></textarea>
+                                <div th:if="${#fields.hasErrors('description')}" class="text-danger mt-1">
+                                    <small th:errors="*{description}"></small>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">Save Category</button>
+                                <a th:href="@{/admin/categories}" class="btn btn-outline-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <div th:if="${#fields.hasErrors('name')}" style="color:red;">
-            <p th:errors="*{name}"></p>
-        </div>
+    <div th:replace="~{fragments/footer-scripts :: scripts}"></div>
 
-        <br>
-
-        <div>
-            <label for="description">Description:</label><br>
-            <textarea id="description" th:field="*{description}" rows="4" cols="50"></textarea>
-        </div>
-        
-        <div th:if="${#fields.hasErrors('description')}" style="color:red;">
-            <p th:errors="*{description}"></p>
-        </div>
-
-        <br>
-
-        <button type="submit">Save</button>
-    </form>
 </body>
 
 </html>

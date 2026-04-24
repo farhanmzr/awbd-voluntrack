@@ -20,31 +20,6 @@
             </div>
         </div>
 
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">For Volunteers</h5>
-                        <p class="card-text">
-                            Explore volunteer opportunities, join events, and track your registrations.
-                        </p>
-                        <a class="btn btn-outline-primary" th:href="@{/registrations/my}">My Registrations</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">For Admins</h5>
-                        <p class="card-text">
-                            Manage categories, venues, events, and registration approvals from one place.
-                        </p>
-                        <a class="btn btn-outline-dark" th:href="@{/admin/events}">Admin Panel</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div th:replace="~{fragments/footer-scripts :: scripts}"></div>
