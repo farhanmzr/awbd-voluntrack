@@ -42,7 +42,7 @@ public class SecurityConfig {
                                                 .requestMatchers("/h2-console/**").permitAll()
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                                 .requestMatchers("/dashboard", "/profile/**", "/registrations/**")
-                                                .hasAnyRole("USER", "ADMIN")
+                                                .hasRole("USER")
                                                 .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form

@@ -1,5 +1,6 @@
 package com.voluntrack.volunteerplatform.controller;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,13 @@ public class RegistrationController {
 
     @PostMapping("/join/{eventId}")
     public String joinEvent(@PathVariable Long eventId, Authentication authentication) {
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (isAdmin) {
+            throw new AccessDeniedException("Admin accounts cannot join events.");
+        }
+
         String username = authentication.getName();
 
         User user = userService.findByUsername(username)
