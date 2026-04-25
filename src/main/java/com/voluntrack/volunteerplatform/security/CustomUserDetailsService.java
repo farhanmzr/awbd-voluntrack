@@ -1,6 +1,6 @@
 package com.voluntrack.volunteerplatform.security;
 
-import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,18 +21,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    public UserDetails loadUserByUsername(String input) throws UsernameNotFoundException {
+
+        User user = userRepository.findByUsername(input)
+                .orElseGet(() -> userRepository.findByEmail(input)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found")));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                user.getEnabled(),
-                true,
-                true,
-                true,
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName()))
-        );
+                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName())));
     }
 }

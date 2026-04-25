@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{fragments/head :: head('Edit Profile')}"></head>
+<head th:replace="~{fragments/head :: head('Edit Admin Profile')}"></head>
 
 <body>
 
-    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div th:replace="~{fragments/admin-navbar :: adminNavbar}"></div>
 
     <div class="container py-4">
         <div class="row justify-content-center">
             <div class="col-lg-7">
                 <div class="card shadow-sm">
                     <div class="card-body p-4">
-                        <h1 class="mb-4">Edit Profile</h1>
+                        <h1 class="mb-4">Edit Admin Profile</h1>
 
-                        <form th:action="@{/profile/save}" th:object="${profile}" method="post">
+                        <form th:action="@{/admin/profile/save}" th:object="${profile}" method="post">
                             <input type="hidden" th:field="*{id}" />
 
                             <div class="mb-3">
@@ -44,7 +44,7 @@
 
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-primary">Save Profile</button>
-                                <a th:href="@{/profile}" class="btn btn-outline-secondary">Cancel</a>
+                                <a th:href="@{/admin/profile}" class="btn btn-outline-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>
