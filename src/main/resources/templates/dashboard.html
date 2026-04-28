@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head :: head('Dashboard')}"></head>
+
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container py-4">
+        <h1 class="mb-3">User Dashboard</h1>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Welcome back</h5>
+                <p class="card-text">
+                    Hello, <strong th:text="${username}">username</strong>.
+                </p>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">My Registrations</h5>
+
+                <div th:if="${#lists.isEmpty(registrations)}" class="alert alert-info">
+                    You have not joined any events yet.
+                </div>
+
+                <ul class="list-group" th:unless="${#lists.isEmpty(registrations)}">
+                    <li class="list-group-item" th:each="registration : ${registrations}">
+                        <strong th:text="${registration.event.title}">Event</strong>
+                        - <span th:text="${registration.status}">PENDING</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer-scripts :: scripts}"></div>
+
+</body>
+
+</html>

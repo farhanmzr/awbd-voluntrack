@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: head('Login')}"></head>
+
+<body style="background:#eaf3f5;">
+
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center py-5">
+        <div class="row w-100 shadow-lg rounded-5 overflow-hidden" style="max-width:1100px; background:white;">
+
+            <div class="col-lg-6 d-none d-lg-flex align-items-end text-white p-5"
+                style="min-height:650px; background:
+                linear-gradient(to top, rgba(0,0,0,.82), rgba(0,0,0,.25)),
+                url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=80') center/cover;">
+
+                <div>
+                    <a th:href="@{/}" class="text-white text-decoration-none fw-bold fs-4 d-inline-block mb-5">
+                        VolunTrack
+                    </a>
+
+                    <h1 class="fw-bold display-5">Welcome back</h1>
+                    <p class="fs-5 mt-3" style="max-width:520px;">
+                        Continue your journey, manage your volunteer activities, and stay connected with meaningful
+                        opportunities.
+                    </p>
+
+                    <div class="d-flex gap-2 mt-5">
+                        <span style="width:34px; height:5px; background:#22a7e8; border-radius:10px;"></span>
+                        <span
+                            style="width:34px; height:5px; background:rgba(255,255,255,.45); border-radius:10px;"></span>
+                        <span
+                            style="width:34px; height:5px; background:rgba(255,255,255,.45); border-radius:10px;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 d-flex align-items-center justify-content-center p-4 p-md-5">
+                <div style="width:100%; max-width:420px;">
+
+                    <h2 class="fw-bold mb-2">Login</h2>
+                    <div style="width:34px; height:4px; background:#22a7e8; border-radius:10px;" class="mb-3"></div>
+
+                    <p class="text-muted mb-4">
+                        Don't have an account?
+                        <a th:href="@{/register}" class="fw-semibold">Register</a>
+                    </p>
+
+                    <div th:if="${param.error}" class="alert alert-danger">
+                        Invalid username/email or password.
+                    </div>
+
+                    <div th:if="${param.logout}" class="alert alert-success">
+                        You have been logged out successfully.
+                    </div>
+
+                    <form th:action="@{/login}" method="post">
+                        <div class="mb-4">
+                            <input type="text" id="username" name="username"
+                                class="form-control form-control-lg rounded-3" placeholder="Username or Email" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <input type="password" id="password" name="password"
+                                class="form-control form-control-lg rounded-3" placeholder="Password" required>
+                        </div>
+
+                        <button type="submit" class="btn w-100 text-white fw-bold rounded-3 py-3"
+                            style="background:#22a7e8;">
+                            LOGIN
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <a th:href="@{/}" class="text-muted text-decoration-none">Back to homepage</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer-scripts :: scripts}"></div>
+
+</body>
+
+</html>

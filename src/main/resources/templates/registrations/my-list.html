@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head :: head('My Registrations')}"></head>
+
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="mb-1">My Registrations</h1>
+                <p class="text-muted mb-0">Track the volunteer events you have joined.</p>
+            </div>
+            <a class="btn btn-outline-primary" th:href="@{/events}">Browse Events</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(registrations)}" class="alert alert-info">
+            You have not joined any events yet.
+        </div>
+
+        <div th:unless="${#lists.isEmpty(registrations)}" class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Event</th>
+                                <th>Status</th>
+                                <th>Registration Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="registration : ${registrations}">
+                                <td>
+                                    <strong th:text="${registration.event.title}">Event Title</strong>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary" th:text="${registration.status}">PENDING</span>
+                                </td>
+                                <td th:text="${registration.registrationDate}">2026-01-01T10:00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer-scripts :: scripts}"></div>
+
+</body>
+
+</html>

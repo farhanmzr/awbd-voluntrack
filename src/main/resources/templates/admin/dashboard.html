@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head :: head('Admin Dashboard')}"></head>
+
+<body>
+
+    <div th:replace="~{fragments/admin-navbar :: adminNavbar}"></div>
+
+    <div class="container py-4">
+        <div class="mb-4">
+            <h1 class="mb-1">Admin Dashboard</h1>
+            <p class="text-muted">Overview of the Volunteer Management Platform.</p>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h6 class="text-muted">Total Events</h6>
+                        <h2 th:text="${totalEvents}">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h6 class="text-muted">Pending Registrations</h6>
+                        <h2 th:text="${pendingRegistrations}">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h6 class="text-muted">Approved Registrations</h6>
+                        <h2 th:text="${approvedRegistrations}">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h6 class="text-muted">Categories</h6>
+                        <h2 th:text="${totalCategories}">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Quick Actions</h5>
+                        <div class="d-grid gap-2">
+                            <a class="btn btn-outline-primary" th:href="@{/admin/events}">Manage Events</a>
+                            <a class="btn btn-outline-primary" th:href="@{/admin/categories}">Manage Categories</a>
+                            <a class="btn btn-outline-primary" th:href="@{/admin/venues}">Manage Venues</a>
+                            <a class="btn btn-outline-primary" th:href="@{/admin/registrations}">Manage
+                                Registrations</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Additional Info</h5>
+                        <p><strong>Total Venues:</strong> <span th:text="${totalVenues}">0</span></p>
+                        <p class="mb-0">Use the admin panel to manage the platform’s main data and monitor participant
+                            activity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer-scripts :: scripts}"></div>
+
+</body>
+
+</html>

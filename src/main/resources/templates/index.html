@@ -1,12 +1,294 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volunteer Management Platform</title>
-</head>
-<body>
-    <h1>Volunteer Management Platform</h1>
-    <p>Project setup is running successfully.</p>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head :: head('VolunTrack')}"></head>
+
+<body style="background:#f7f1ea; color:#063f36;">
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top"
+        style="background:rgba(0,70,60,.92); backdrop-filter: blur(10px);">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/}">VolunTrack</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#landingNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="landingNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+
+                <a sec:authorize="!isAuthenticated()" class="btn btn-light btn-sm rounded-pill px-3"
+                    th:href="@{/login}">Join movement</a>
+                <a sec:authorize="hasRole('USER')" class="btn btn-light btn-sm rounded-pill px-3"
+                    th:href="@{/dashboard}">My Dashboard</a>
+                <a sec:authorize="hasRole('ADMIN')" class="btn btn-light btn-sm rounded-pill px-3"
+                    th:href="@{/admin/dashboard}">Admin Panel</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="d-flex align-items-center text-white"
+        style="min-height:100vh; background:linear-gradient(rgba(0,78,67,.86), rgba(0,78,67,.92)), url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1600&q=80') center/cover;">
+        <div class="container text-center pt-5">
+            <div class="d-inline-flex align-items-center gap-2 rounded-pill px-3 py-2 mb-4"
+                style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); backdrop-filter:blur(10px); box-shadow:0 8px 24px rgba(0,0,0,.12);">
+            
+                <div class="d-flex align-items-center">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&q=80"
+                        alt="Volunteer" class="rounded-circle border border-2 border-white"
+                        style="width:34px; height:34px; object-fit:cover; margin-right:-10px;">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&q=80"
+                        alt="Volunteer" class="rounded-circle border border-2 border-white"
+                        style="width:34px; height:34px; object-fit:cover; margin-right:-10px;">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&q=80"
+                        alt="Volunteer" class="rounded-circle border border-2 border-white"
+                        style="width:34px; height:34px; object-fit:cover;">
+                </div>
+            
+                <span class="text-uppercase small fw-bold text-white" style="letter-spacing:.8px;">
+                    10.000+ Volunteers Around The World
+                </span>
+            </div>
+            
+            <h1 class="display-2 fw-bold mx-auto text-uppercase" style="max-width:900px;">
+                Where Purpose Meets The World
+            </h1>
+            <p class="lead mt-4 mx-auto" style="max-width:650px;">
+                Discover volunteer events, join meaningful activities, and help communities grow through simple,
+                organized participation.
+            </p>
+            <div class="mt-4">
+                <a th:href="@{/events}" class="btn btn-light rounded-pill px-4 py-2 me-2">Explore Programs</a>
+                <a href="#about" class="btn btn-outline-light rounded-pill px-4 py-2">How it works</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-5">
+        <div class="container text-center">
+            <p class="text-uppercase fw-bold small" style="color:#d47b28;">About VolunTrack</p>
+            <h2 class="fw-bold display-6">Where your mission begins</h2>
+            <p class="mx-auto text-muted" style="max-width:650px;">
+                VolunTrack connects volunteers with impactful events while helping organizers manage registrations,
+                venues, categories, and participation status in one place.
+            </p>
+        </div>
+    </section>
+
+    <section id="programs" class="pb-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4" th:each="category : ${categories}">
+                    <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                        <div class="card-body p-4" style="background:#06493f; color:white;">
+                            <p class="small text-uppercase" style="color:#f0b66b;">Program Area</p>
+                            <h4 class="fw-bold" th:text="${category.name}">Environment</h4>
+                            <p class="mb-0" th:text="${category.description}">Category description</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4" th:if="${#lists.isEmpty(categories)}">
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4">
+                            <h4>No categories yet</h4>
+                            <p class="text-muted mb-0">Categories will appear here once they are created.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="events" class="py-5" style="background:#073f36; color:white;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="text-uppercase fw-bold small" style="color:#f0b66b;">Featured Events</p>
+                <h2 class="fw-bold display-6">Where impact takes shape</h2>
+                <p class="mx-auto" style="max-width:650px;">Browse opportunities and take part in community-driven
+                    volunteer activities.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4" th:each="event : ${featuredEvents}">
+                    <div class="card border-0 shadow-sm h-100 rounded-4">
+                        <div class="card-body p-4">
+                            <span class="badge bg-success mb-3" th:text="${event.status}">OPEN</span>
+                            <h4 class="fw-bold" th:text="${event.title}">Event Title</h4>
+                            <p class="text-muted" th:text="${event.description}">Description</p>
+                            <p class="small mb-1"><strong>Capacity:</strong> <span th:text="${event.capacity}">20</span>
+                            </p>
+                            <p class="small"><strong>Start:</strong> <span th:text="${event.startDateTime}">Date</span>
+                            </p>
+                            <a class="btn btn-outline-success rounded-pill"
+                                th:href="@{/events/{id}(id=${event.id})}">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a th:href="@{/events}" class="btn btn-light rounded-pill px-4">Explore all events</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" style="background:#f7f1ea;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="text-uppercase fw-bold small mb-2" style="color:#d47b28; letter-spacing:1.5px;">
+                    How it works
+                </p>
+                <h2 class="fw-bold display-6">Begin your impact in four simple steps</h2>
+                <p class="text-muted mx-auto mt-3" style="max-width:650px;">
+                    From discovering opportunities to participating in meaningful activities, VolunTrack makes every step
+                    simple, organized, and impactful.
+                </p>
+            </div>
+    
+            <div class="row g-4 text-center">
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=600&q=80"
+                            class="card-img-top" alt="Browse volunteer events" style="height:170px; object-fit:cover;">
+                        <div class="card-body p-4">
+                            <span class="badge rounded-pill mb-3 px-3 py-2" style="background:#eaf6f2; color:#06493f;">Step
+                                01</span>
+                            <h5 class="fw-bold">Browse Events</h5>
+                            <p class="text-muted mb-0">
+                                Explore volunteer opportunities based on your interests, categories, and available events.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80"
+                            class="card-img-top" alt="Join volunteer event" style="height:170px; object-fit:cover;">
+                        <div class="card-body p-4">
+                            <span class="badge rounded-pill mb-3 px-3 py-2" style="background:#eaf6f2; color:#06493f;">Step
+                                02</span>
+                            <h5 class="fw-bold">Join with One Click</h5>
+                            <p class="text-muted mb-0">
+                                Register for an event easily and submit your participation request through the platform.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80"
+                            class="card-img-top" alt="Approval process" style="height:170px; object-fit:cover;">
+                        <div class="card-body p-4">
+                            <span class="badge rounded-pill mb-3 px-3 py-2" style="background:#eaf6f2; color:#06493f;">Step
+                                03</span>
+                            <h5 class="fw-bold">Get Approved</h5>
+                            <p class="text-muted mb-0">
+                                Admins review your registration and update your participation status clearly.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=600&q=80"
+                            class="card-img-top" alt="Participate and make impact" style="height:170px; object-fit:cover;">
+                        <div class="card-body p-4">
+                            <span class="badge rounded-pill mb-3 px-3 py-2" style="background:#eaf6f2; color:#06493f;">Step
+                                04</span>
+                            <h5 class="fw-bold">Make an Impact</h5>
+                            <p class="text-muted mb-0">
+                                Attend the event, contribute to the community, and be part of meaningful change.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="py-5" style="background:#fffaf4;">
+        <div class="container">
+            <div class="text-center mb-4">
+                <p class="text-uppercase fw-bold small" style="color:#d47b28;">Frequently Asked Questions</p>
+                <h2 class="fw-bold">Answers for your next step</h2>
+            </div>
+
+            <div class="accordion mx-auto" id="faqAccordion" style="max-width:850px;">
+                <div class="accordion-item">
+                    <h2 class="accordion-header"><button class="accordion-button" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#faq1">How do I join an event?</button></h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">Create an account, open an event detail page, and click Join Event.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header"><button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#faq2">Can admins join events?</button></h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">No. Admin accounts manage events and registrations, while user
+                            accounts participate in events.</div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header"><button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#faq3">What happens after I join?</button></h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">Your registration status becomes pending until an admin approves or
+                            rejects it.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-5" style="background:#06493f; color:white;">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6">
+                    <p class="text-uppercase fw-bold small" style="color:#f0b66b;">Contact</p>
+                    <h2 class="fw-bold display-6">Connect with us globally</h2>
+                    <p>Have questions about volunteering or organizing events? Reach out and start your journey with
+                        VolunTrack.</p>
+                    <p class="mb-0"><strong>Email:</strong> hello@voluntrack.com</p>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card border-0 rounded-4 shadow">
+                        <div class="card-body p-4">
+                            <input class="form-control mb-3" placeholder="Your name">
+                            <input class="form-control mb-3" placeholder="Email address">
+                            <textarea class="form-control mb-3" rows="4" placeholder="Message"></textarea>
+                            <button class="btn btn-success w-100 rounded-pill">Send Message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-4" style="background:#03342d; color:white;">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <p class="mb-0">© 2026 VolunTrack. All rights reserved.</p>
+            <div>
+                <a class="text-white me-3" th:href="@{/events}">Events</a>
+                <a class="text-white me-3" href="#about">About Us</a>
+                <a class="text-white" href="#contact">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <div th:replace="~{fragments/footer-scripts :: scripts}"></div>
+
 </body>
+
 </html>
