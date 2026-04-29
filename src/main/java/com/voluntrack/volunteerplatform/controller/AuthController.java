@@ -78,6 +78,6 @@ public class AuthController {
 
         logger.info("New user registered with username: {}", user.getUsername());
 
-        return "redirect:/register?registered";
+        return "redirect:/login?registered";
     }
 }
