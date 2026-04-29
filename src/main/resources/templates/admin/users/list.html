@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head :: head('Manage Users')}"></head>
+
+<body>
+
+    <div th:replace="~{fragments/admin-navbar :: adminNavbar}"></div>
+
+    <div class="container py-4">
+        <div class="mb-4">
+            <h1 class="mb-1">Manage Users</h1>
+            <p class="text-muted mb-0">View and manage registered users in the platform.</p>
+        </div>
+
+        <div th:if="${param.statusUpdated}" class="alert alert-success">
+            User status updated successfully.
+        </div>
+
+        <div th:if="${param.deleted}" class="alert alert-success">
+            User deleted successfully.
+        </div>
+
+        <div th:if="${#lists.isEmpty(users)}" class="alert alert-info">
+            No users found.
+        </div>
+
+        <div th:if="${param.deleteError}" class="alert alert-danger">
+            This user cannot be deleted because they already have related profile or registration data.
+        </div>
+        
+        <div th:if="${param.invalidAction}" class="alert alert-danger">
+            This action is only allowed for regular users.
+        </div>
+        
+        <div th:if="${param.deleted}" class="alert alert-success">
+            User deleted successfully.
+        </div>
+
+        <div th:unless="${#lists.isEmpty(users)}" class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th style="width: 220px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="user : ${users}">
+                                <td th:text="${user.id}">1</td>
+                                <td th:text="${user.username}">username</td>
+                                <td th:text="${user.email}">email@example.com</td>
+                                <td>
+                                    <span class="badge bg-primary" th:text="${user.role.name}">USER</span>
+                                </td>
+                                <td>
+                                    <span th:if="${user.enabled}" class="badge bg-success">Enabled</span>
+                                    <span th:unless="${user.enabled}" class="badge bg-danger">Disabled</span>
+                                </td>
+                                <td th:text="${user.createdAt}">2026-01-01T10:00</td>
+                                <td>
+                                    <form th:action="@{/admin/users/{id}/toggle-status(id=${user.id})}" method="post"
+                                        class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-outline-warning"
+                                            th:text="${user.enabled} ? 'Disable' : 'Enable'">
+                                            Toggle
+                                        </button>
+                                    </form>
+
+                                    <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post"
+                                        class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Are you sure you want to delete this user?');">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer-scripts :: scripts}"></div>
+
+</body>
+
+</html>
