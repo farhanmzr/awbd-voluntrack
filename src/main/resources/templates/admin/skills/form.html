@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head :: head('Skill Form')}"></head>
+
+<body>
+
+    <div th:replace="~{fragments/admin-navbar :: adminNavbar}"></div>
+
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h1 class="mb-4" th:text="${skill.id == null} ? 'Create Skill' : 'Edit Skill'">
+                            Skill Form
+                        </h1>
+
+                        <a class="btn btn-outline-secondary btn-sm mb-4" th:href="@{/admin/skills}">
+                            Back to Skill List
+                        </a>
+
+                        <form th:action="@{${formAction}}" th:object="${skill}" method="post">
+                            <input type="hidden" th:field="*{id}">
+
+                            <div class="mb-4">
+                                <label for="name" class="form-label">Skill Name</label>
+                                <input type="text" id="name" th:field="*{name}" class="form-control" required>
+                                <div th:if="${#fields.hasErrors('name')}" class="text-danger mt-1">
+                                    <small th:errors="*{name}"></small>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">Save Skill</button>
+                                <a th:href="@{/admin/skills}" class="btn btn-outline-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer-scripts :: scripts}"></div>
+
+</body>
+
+</html>
