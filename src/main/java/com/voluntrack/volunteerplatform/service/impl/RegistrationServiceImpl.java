@@ -3,6 +3,8 @@ package com.voluntrack.volunteerplatform.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationServiceImpl.class);
+
     public RegistrationServiceImpl(RegistrationRepository registrationRepository,
                                    UserRepository userRepository,
                                    EventRepository eventRepository) {
@@ -37,11 +41,15 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public Registration registerUserToEvent(Long userId, Long eventId) {
+        logger.info("User with id {} is trying to register for event {}", userId, eventId);
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
 
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + eventId));
+
+        logger.warn("Duplicate registration attempt. User id: {}, Event id: {}", userId, eventId);
 
         if (registrationRepository.findByUserIdAndEventId(userId, eventId).isPresent()) {
             throw new DuplicateRegistrationException("User has already registered for this event.");
@@ -65,7 +73,10 @@ public class RegistrationServiceImpl implements RegistrationService {
         registration.setEvent(event);
         registration.setStatus(RegistrationStatus.PENDING);
 
-        return registrationRepository.save(registration);
+        Registration savedRegistration = registrationRepository.save(registration);
+        logger.info("Registration created successfully. Registration id: {}, User id: {}, Event id: {}",
+                savedRegistration.getId(), userId, eventId);
+        return savedRegistration;
     }
 
     @Override

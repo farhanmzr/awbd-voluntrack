@@ -1,5 +1,7 @@
 package com.voluntrack.volunteerplatform.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,8 @@ public class AuthController {
     private final UserService userService;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     public AuthController(UserService userService,
             RoleRepository roleRepository,
@@ -48,10 +52,12 @@ public class AuthController {
 
         if (userService.existsByUsername(registerRequest.getUsername())) {
             bindingResult.rejectValue("username", "error.username", "Username is already taken.");
+            logger.warn("Registration failed: username already taken - {}", registerRequest.getUsername());
         }
 
         if (userService.existsByEmail(registerRequest.getEmail())) {
             bindingResult.rejectValue("email", "error.email", "Email is already registered.");
+            logger.warn("Registration failed: email already registered - {}", registerRequest.getEmail());
         }
 
         if (bindingResult.hasErrors()) {
@@ -69,6 +75,8 @@ public class AuthController {
         user.setRole(userRole);
 
         userService.save(user);
+
+        logger.info("New user registered with username: {}", user.getUsername());
 
         return "redirect:/register?registered";
     }

@@ -1,5 +1,7 @@
 package com.voluntrack.volunteerplatform.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +33,8 @@ public class AdminEventController {
     private final VenueService venueService;
     private final UserService userService;
     private final RegistrationRepository registrationRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(AdminEventController.class);
 
     public AdminEventController(EventService eventService,
             CategoryService categoryService,
@@ -129,6 +133,8 @@ public class AdminEventController {
 
         eventService.save(eventToSave);
 
+        logger.info("Admin {} saved event with title: {}", authentication.getName(), eventToSave.getTitle());
+
         return "redirect:/admin/events";
     }
 
@@ -148,11 +154,14 @@ public class AdminEventController {
 
     @GetMapping("/delete/{id}")
     public String deleteEvent(@PathVariable Long id, Model model) {
+        
         if (registrationRepository.existsByEventId(id)) {
+            logger.warn("Delete event blocked because event id {} has registrations", id);
             return "redirect:/admin/events?deleteError=true";
         }
 
         eventService.deleteById(id);
+        logger.info("Event with id {} deleted successfully", id);
         return "redirect:/admin/events?deleted=true";
     }
 }
