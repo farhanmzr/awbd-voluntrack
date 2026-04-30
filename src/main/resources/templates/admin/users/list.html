@@ -64,7 +64,7 @@
                                     <span th:if="${user.enabled}" class="badge bg-success">Enabled</span>
                                     <span th:unless="${user.enabled}" class="badge bg-danger">Disabled</span>
                                 </td>
-                                <td th:text="${user.createdAt}">2026-01-01T10:00</td>
+                                <td th:text="${#temporals.format(user.createdAt, 'dd MMM yyyy, HH:mm')}">2026-01-01T10:00</td>
                                 <td>
                                     <form th:action="@{/admin/users/{id}/toggle-status(id=${user.id})}" method="post"
                                         class="d-inline">

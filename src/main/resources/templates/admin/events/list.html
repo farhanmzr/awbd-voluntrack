@@ -81,8 +81,8 @@
                                 <td th:text="${event.capacity}">10</td>
                                 <td th:text="${event.category.name}">Category</td>
                                 <td th:text="${event.venue.name}">Venue</td>
-                                <td th:text="${event.startDateTime}">2026-01-01T10:00</td>
-                                <td th:text="${event.endDateTime}">2026-01-01T12:00</td>
+                                <td th:text="${#temporals.format(event.startDateTime, 'dd MMM yyyy, HH:mm')}">2026-01-01T10:00</td>
+                                <td th:text="${#temporals.format(event.endDateTime, 'dd MMM yyyy, HH:mm')}">2026-01-01T12:00</td>
                                 <td>
                                     <a class="btn btn-sm btn-outline-warning me-1"
                                         th:href="@{/admin/events/edit/{id}(id=${event.id})}">

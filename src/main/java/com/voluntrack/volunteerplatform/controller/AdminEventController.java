@@ -1,5 +1,7 @@
 package com.voluntrack.volunteerplatform.controller;
 
+import java.time.LocalDateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -90,6 +92,24 @@ public class AdminEventController {
             Authentication authentication,
             Model model) {
 
+        LocalDateTime now = LocalDateTime.now();
+
+        if (event.getEndDateTime() != null && event.getEndDateTime().isBefore(now)) {
+            bindingResult.rejectValue(
+                    "endDateTime",
+                    "event.endDateTime.past",
+                    "End date cannot be in the past.");
+        }
+
+        if (event.getStartDateTime() != null
+                && event.getEndDateTime() != null
+                && event.getEndDateTime().isBefore(event.getStartDateTime())) {
+            bindingResult.rejectValue(
+                    "endDateTime",
+                    "event.endDateTime.beforeStart",
+                    "End date cannot be before start date.");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.findAll());
             model.addAttribute("venues", venueService.findAll());
@@ -122,6 +142,7 @@ public class AdminEventController {
 
             eventToSave = existingEvent;
         } else {
+
             event.setCreatedBy(adminUser);
             event.setCategory(categoryService.findById(categoryId)
                     .orElseThrow(() -> new IllegalArgumentException("Category not found")));
@@ -154,7 +175,7 @@ public class AdminEventController {
 
     @GetMapping("/delete/{id}")
     public String deleteEvent(@PathVariable Long id, Model model) {
-        
+
         if (registrationRepository.existsByEventId(id)) {
             logger.warn("Delete event blocked because event id {} has registrations", id);
             return "redirect:/admin/events?deleteError=true";

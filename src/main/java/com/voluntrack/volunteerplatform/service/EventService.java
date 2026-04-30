@@ -1,5 +1,6 @@
 package com.voluntrack.volunteerplatform.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -24,4 +25,6 @@ public interface EventService {
     Page<Event> searchByTitle(String keyword, Pageable pageable);
 
     Page<Event> searchAndFilter(String keyword, Long categoryId, Pageable pageable);
+
+    List<Event> findFeaturedEvents(int limit);
 }

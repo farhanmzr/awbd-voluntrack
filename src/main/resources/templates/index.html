@@ -82,26 +82,38 @@
 
     <section id="programs" class="pb-5">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4" th:each="category : ${categories}">
-                    <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
-                        <div class="card-body p-4" style="background:#06493f; color:white;">
-                            <p class="small text-uppercase" style="color:#f0b66b;">Program Area</p>
-                            <h4 class="fw-bold" th:text="${category.name}">Environment</h4>
-                            <p class="mb-0" th:text="${category.description}">Category description</p>
+    
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="fw-bold">Program Categories</h3>
+            </div>
+    
+            <!-- SCROLL CONTAINER -->
+            <div style="overflow-x:auto; scrollbar-width: none;">
+                <div class="d-flex gap-3" style="min-width: max-content;">
+    
+                    <div th:each="category : ${categories}" style="min-width:280px; max-width:280px;">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                            <div class="card-body p-4" style="background:#06493f; color:white;">
+                                <p class="small text-uppercase" style="color:#f0b66b;">Program Area</p>
+                                <h4 class="fw-bold" th:text="${category.name}">Environment</h4>
+                                <p class="mb-0" th:text="${category.description}">Category description</p>
+                            </div>
                         </div>
                     </div>
+    
                 </div>
-
-                <div class="col-md-4" th:if="${#lists.isEmpty(categories)}">
-                    <div class="card border-0 shadow-sm rounded-4">
-                        <div class="card-body p-4">
-                            <h4>No categories yet</h4>
-                            <p class="text-muted mb-0">Categories will appear here once they are created.</p>
-                        </div>
+            </div>
+    
+            <!-- EMPTY STATE -->
+            <div th:if="${#lists.isEmpty(categories)}" class="mt-4">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <h4>No categories yet</h4>
+                        <p class="text-muted mb-0">Categories will appear here once they are created.</p>
                     </div>
                 </div>
             </div>
+    
         </div>
     </section>
 
@@ -123,7 +135,7 @@
                             <p class="text-muted" th:text="${event.description}">Description</p>
                             <p class="small mb-1"><strong>Capacity:</strong> <span th:text="${event.capacity}">20</span>
                             </p>
-                            <p class="small"><strong>Start:</strong> <span th:text="${event.startDateTime}">Date</span>
+                            <p class="small"><strong>Start:</strong> <span th:text="${#temporals.format(event.startDateTime, 'EEE, dd MMM yyyy, HH:mm')}">Date</span>
                             </p>
                             <a class="btn btn-outline-success rounded-pill"
                                 th:href="@{/events/{id}(id=${event.id})}">View Details</a>
