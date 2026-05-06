@@ -43,6 +43,16 @@
                         <p class="text-muted mb-1">Bio</p>
                         <p class="mb-0" th:text="${profile.bio != null ? profile.bio : '-'}">-</p>
                     </div>
+                    
+                    <div th:if="${skills == null or skills.isEmpty()}">
+                        <span class="text-muted">No skills selected yet.</span>
+                    </div>
+                    
+                    <div th:unless="${skills == null or skills.isEmpty()}">
+                        <span th:each="skill : ${skills}" class="badge bg-success me-1 mb-1" th:text="${skill.name}">
+                            Skill
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

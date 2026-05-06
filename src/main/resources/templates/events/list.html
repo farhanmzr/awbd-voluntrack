@@ -72,7 +72,8 @@
                         <ul class="list-unstyled small mb-3">
                             <li><strong>Status:</strong> <span th:text="${event.status}">OPEN</span></li>
                             <li><strong>Capacity:</strong> <span th:text="${event.capacity}">10</span></li>
-                            <li><strong>Start:</strong> <span th:text="${event.startDateTime}">2026-01-01T10:00</span>
+                            <li><strong>Start Date:</strong> <span th:text="${#temporals.format(event.startDateTime, 'EEE, dd MMM yyyy, HH:mm')}">2026-01-01T10:00</span></li>
+                            <li><strong>End Date:</strong> <span th:text="${#temporals.format(event.endDateTime, 'EEE, dd MMM yyyy, HH:mm')}">2026-01-01T10:00</span></li>
                             </li>
                         </ul>
 

@@ -1,9 +1,12 @@
 package com.voluntrack.volunteerplatform.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.voluntrack.volunteerplatform.entity.Event;
@@ -61,17 +64,47 @@ public class EventServiceImpl implements EventService {
         boolean hasCategory = categoryId != null;
 
         if (hasKeyword && hasCategory) {
-            return eventRepository.findByTitleContainingIgnoreCaseAndCategoryId(keyword.trim(), categoryId, pageable);
+            return eventRepository.findByStatusInAndTitleContainingIgnoreCaseAndCategoryId(
+                    PUBLIC_STATUSES,
+                    keyword.trim(),
+                    categoryId,
+                    pageable);
         }
 
         if (hasKeyword) {
-            return eventRepository.findByTitleContainingIgnoreCase(keyword.trim(), pageable);
+            return eventRepository.findByStatusInAndTitleContainingIgnoreCase(
+                    PUBLIC_STATUSES,
+                    keyword.trim(),
+                    pageable);
         }
 
         if (hasCategory) {
-            return eventRepository.findByCategoryId(categoryId, pageable);
+            return eventRepository.findByStatusInAndCategoryId(
+                    PUBLIC_STATUSES,
+                    categoryId,
+                    pageable);
         }
 
-        return eventRepository.findAll(pageable);
+        return eventRepository.findByStatusIn(PUBLIC_STATUSES, pageable);
     }
+
+    @Override
+    public List<Event> findFeaturedEvents(int limit) {
+        Pageable pageable = PageRequest.of(0, limit,
+                Sort.by("startDateTime").ascending());
+
+        return eventRepository.findByStatusIn(
+                List.of(
+                        EventStatus.OPEN,
+                        EventStatus.FULL,
+                        EventStatus.CLOSED,
+                        EventStatus.COMPLETED),
+                pageable).getContent();
+    }
+
+    private final List<EventStatus> PUBLIC_STATUSES = List.of(
+            EventStatus.OPEN,
+            EventStatus.FULL,
+            EventStatus.CLOSED,
+            EventStatus.COMPLETED);
 }

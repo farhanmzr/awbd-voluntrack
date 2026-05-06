@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.voluntrack.volunteerplatform.entity.Event;
+import com.voluntrack.volunteerplatform.enums.EventStatus;
 import com.voluntrack.volunteerplatform.service.CategoryService;
 import com.voluntrack.volunteerplatform.service.EventService;
 
@@ -59,6 +60,10 @@ public class EventController {
     public String eventDetail(@PathVariable Long id, Model model) {
         Event event = eventService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + id));
+
+        if (event.getStatus() == EventStatus.DRAFT || event.getStatus() == EventStatus.CANCELLED) {
+            throw new IllegalArgumentException("Event not available");
+        }
 
         model.addAttribute("event", event);
         return "events/detail";

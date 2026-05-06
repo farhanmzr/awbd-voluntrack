@@ -22,7 +22,7 @@ public class HomeController {
     public String home(Model model) {
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("featuredEvents",
-                eventService.findAll(org.springframework.data.domain.PageRequest.of(0, 3)).getContent());
+                eventService.findFeaturedEvents(3));
         return "index";
     }
 

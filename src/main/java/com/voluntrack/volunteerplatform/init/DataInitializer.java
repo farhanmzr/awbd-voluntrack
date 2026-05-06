@@ -10,12 +10,14 @@ import org.springframework.stereotype.Component;
 import com.voluntrack.volunteerplatform.entity.Category;
 import com.voluntrack.volunteerplatform.entity.Event;
 import com.voluntrack.volunteerplatform.entity.Role;
+import com.voluntrack.volunteerplatform.entity.Skill;
 import com.voluntrack.volunteerplatform.entity.User;
 import com.voluntrack.volunteerplatform.entity.Venue;
 import com.voluntrack.volunteerplatform.enums.EventStatus;
 import com.voluntrack.volunteerplatform.repository.CategoryRepository;
 import com.voluntrack.volunteerplatform.repository.EventRepository;
 import com.voluntrack.volunteerplatform.repository.RoleRepository;
+import com.voluntrack.volunteerplatform.repository.SkillRepository;
 import com.voluntrack.volunteerplatform.repository.UserRepository;
 import com.voluntrack.volunteerplatform.repository.VenueRepository;
 
@@ -28,19 +30,22 @@ public class DataInitializer implements CommandLineRunner {
     private final VenueRepository venueRepository;
     private final EventRepository eventRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SkillRepository skillRepository;
 
     public DataInitializer(RoleRepository roleRepository,
                            UserRepository userRepository,
                            CategoryRepository categoryRepository,
                            VenueRepository venueRepository,
                            EventRepository eventRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           SkillRepository skillRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.venueRepository = venueRepository;
         this.eventRepository = eventRepository;
         this.passwordEncoder = passwordEncoder;
+        this.skillRepository = skillRepository;
     }
 
     @Override
@@ -74,6 +79,12 @@ public class DataInitializer implements CommandLineRunner {
                 centralParkVenue,
                 adminUser
         );
+
+        createSkillIfNotExists("Teaching");
+        createSkillIfNotExists("First Aid");
+        createSkillIfNotExists("Communication");
+        createSkillIfNotExists("Event Coordination");
+        createSkillIfNotExists("Fundraising");
     }
 
     private Role createRoleIfNotExists(String roleName) {
@@ -189,5 +200,14 @@ public class DataInitializer implements CommandLineRunner {
         event.setCreatedBy(createdBy);
 
         eventRepository.save(event);
+    }
+
+    private Skill createSkillIfNotExists(String name) {
+    return skillRepository.findByName(name)
+            .orElseGet(() -> {
+                Skill skill = new Skill();
+                skill.setName(name);
+                return skillRepository.save(skill);
+            });
     }
 }

@@ -26,10 +26,10 @@
                                     th:text="${event.status}">OPEN</span></li>
                             <li class="list-group-item"><strong>Capacity:</strong> <span
                                     th:text="${event.capacity}">10</span></li>
-                            <li class="list-group-item"><strong>Start:</strong> <span
-                                    th:text="${event.startDateTime}">2026-01-01T10:00</span></li>
-                            <li class="list-group-item"><strong>End:</strong> <span
-                                    th:text="${event.endDateTime}">2026-01-01T12:00</span></li>
+                            <li class="list-group-item"><strong>Start Date:</strong> <span
+                                    th:text="${#temporals.format(event.startDateTime, 'EEE, dd MMM yyyy, HH:mm')}">2026-01-01T10:00</span></li>
+                            <li class="list-group-item"><strong>End Date:</strong> <span
+                                    th:text="${#temporals.format(event.endDateTime, 'EEE, dd MMM yyyy, HH:mm')}">2026-01-01T12:00</span></li>
                             <li class="list-group-item"><strong>Category:</strong> <span
                                     th:text="${event.category.name}">Category</span></li>
                             <li class="list-group-item"><strong>Venue:</strong> <span

@@ -80,7 +80,7 @@
                                 <td>
                                     <span class="badge bg-secondary" th:text="${registration.status}">PENDING</span>
                                 </td>
-                                <td th:text="${registration.registrationDate}">2026-01-01T10:00</td>
+                                <td th:text="${#temporals.format(registration.registrationDate, 'dd MMM yyyy, HH:mm')}">2026-01-01T10:00</td>
                                 <td>
                                     <form th:if="${registration.status.name() == 'PENDING'}"
                                         th:action="@{/admin/registrations/{id}/approve(id=${registration.id})}"

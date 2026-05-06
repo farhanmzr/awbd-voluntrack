@@ -3,3 +3,18 @@ spring:
     name: volunteer-management-platform
   profiles:
     active: dev
+
+logging:
+  level:
+    root: INFO
+    "[com.voluntrack.volunteerplatform]": DEBUG
+    "[org.springframework.security]": INFO
+    "[org.hibernate.SQL]": DEBUG
+
+  file:
+    name: logs/voluntrack.log
+
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 7

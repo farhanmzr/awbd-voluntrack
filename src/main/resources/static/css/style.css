@@ -1,0 +1,34 @@
+/* ===== FAQ ACCORDION CUSTOM ===== */
+
+/* Title default */
+.accordion-button {
+    font-weight: 550;
+    color: #1f2d2a;
+    background-color: #ffffff;
+    box-shadow: none;
+}
+
+/* Title aktif */
+.accordion-button:not(.collapsed) {
+    color: #06493f !important;
+    background-color: #ffffff;
+    box-shadow: none;
+}
+
+/* Remove biru bootstrap */
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+/* Description */
+.accordion-body {
+    color: #4b5c58;
+    background-color: #e6f2ef;
+    font-size: 0.95rem;
+}
+
+/* Arrow icon */
+.accordion-button::after {
+    filter: brightness(0) saturate(100%) invert(18%) sepia(35%) saturate(600%) hue-rotate(120deg);
+}
