@@ -125,4 +125,9 @@ public class RegistrationServiceImpl implements RegistrationService {
     public Page<Registration> findByStatus(RegistrationStatus status, Pageable pageable) {
         return registrationRepository.findByStatus(status, pageable);
     }
+
+    @Override
+    public boolean hasUserRegisteredForEvent(Long userId, Long eventId) {
+        return registrationRepository.existsByUserIdAndEventId(userId, eventId);
+    }
 }

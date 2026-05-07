@@ -1,6 +1,7 @@
 package com.voluntrack.volunteerplatform.controller;
 
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.voluntrack.volunteerplatform.entity.Event;
-import com.voluntrack.volunteerplatform.enums.EventStatus;
+import com.voluntrack.volunteerplatform.entity.User;
 import com.voluntrack.volunteerplatform.service.CategoryService;
 import com.voluntrack.volunteerplatform.service.EventService;
+import com.voluntrack.volunteerplatform.service.RegistrationService;
+import com.voluntrack.volunteerplatform.service.UserService;
 
 @Controller
 @RequestMapping("/events")
@@ -19,10 +22,17 @@ public class EventController {
 
     private final EventService eventService;
     private final CategoryService categoryService;
+    private final UserService userService;
+    private final RegistrationService registrationService;
 
-    public EventController(EventService eventService, CategoryService categoryService) {
+    public EventController(EventService eventService,
+            CategoryService categoryService,
+            UserService userService,
+            RegistrationService registrationService) {
         this.eventService = eventService;
         this.categoryService = categoryService;
+        this.userService = userService;
+        this.registrationService = registrationService;
     }
 
     @GetMapping
@@ -57,15 +67,27 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public String eventDetail(@PathVariable Long id, Model model) {
+    public String eventDetail(@PathVariable Long id,
+            Model model,
+            Authentication authentication) {
         Event event = eventService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + id));
 
-        if (event.getStatus() == EventStatus.DRAFT || event.getStatus() == EventStatus.CANCELLED) {
-            throw new IllegalArgumentException("Event not available");
+        boolean alreadyRegistered = false;
+
+        if (authentication != null && authentication.isAuthenticated()
+                && authentication.getAuthorities().stream()
+                        .anyMatch(authority -> authority.getAuthority().equals("ROLE_USER"))) {
+
+            User user = userService.findByUsername(authentication.getName())
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+            alreadyRegistered = registrationService.hasUserRegisteredForEvent(user.getId(), event.getId());
         }
 
         model.addAttribute("event", event);
+        model.addAttribute("alreadyRegistered", alreadyRegistered);
+
         return "events/detail";
     }
 }

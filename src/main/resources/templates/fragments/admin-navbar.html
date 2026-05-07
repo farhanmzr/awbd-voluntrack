@@ -2,52 +2,91 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" th:fragment="adminNavbar">
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/admin/dashboard}">Admin Panel</a>
+    <div th:fragment="adminSidebar">
+        <aside class="admin-sidebar">
+            <div>
+                <a class="admin-brand" th:href="@{/admin/dashboard}">
+                    <span class="admin-brand-icon">
+                        <i class="bi bi-heart-fill"></i>
+                    </span>
+                    <span>VolunTrack</span>
+                </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <a class="btn btn-success w-100 rounded-4 admin-create-btn" th:href="@{/admin/events/create}">
+                    <i class="bi bi-plus-lg me-2"></i>Create Event
+                </a>
 
-            <div class="collapse navbar-collapse" id="adminNavbar">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/dashboard}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/events}">Events</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/categories}">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/venues}">Venues</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/registrations}">Registrations</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/users}">Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/skills}">Skills</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/profile}">Profile</a>
-                    </li>
-                </ul>
+                <div class="admin-sidebar-label">Menu</div>
 
-                <div class="d-flex align-items-center gap-2">
-                    <a class="btn btn-outline-light btn-sm" th:href="@{/}">Public Site</a>
+                <a class="admin-nav-link" th:href="@{/admin/dashboard}">
+                    <i class="bi bi-grid-1x2-fill"></i>
+                    <span>Dashboard</span>
+                </a>
 
-                    <form th:action="@{/logout}" method="post" class="m-0">
-                        <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
-                    </form>
-                </div>
+                <a class="admin-nav-link" th:href="@{/admin/registrations}">
+                    <i class="bi bi-clipboard-check-fill"></i>
+                    <span>Registrations</span>
+                </a>
+
+                <a class="admin-nav-link" th:href="@{/admin/events}">
+                    <i class="bi bi-calendar-event-fill"></i>
+                    <span>Events</span>
+                </a>
+
+                <a class="admin-nav-link" th:href="@{/admin/categories}">
+                    <i class="bi bi-tags-fill"></i>
+                    <span>Categories</span>
+                </a>
+
+                <a class="admin-nav-link" th:href="@{/admin/venues}">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span>Venues</span>
+                </a>
+
+                <a class="admin-nav-link" th:href="@{/admin/users}">
+                    <i class="bi bi-people-fill"></i>
+                    <span>Users</span>
+                </a>
+
+                <a class="admin-nav-link" th:href="@{/admin/skills}">
+                    <i class="bi bi-stars"></i>
+                    <span>Skills</span>
+                </a>
+            </div>
+
+            <div class="admin-sidebar-bottom">
+                <div class="admin-sidebar-label">Account</div>
+
+                <a class="admin-nav-link" th:href="@{/admin/profile}">
+                    <i class="bi bi-person-circle"></i>
+                    <span>Profile</span>
+                </a>
+
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="admin-nav-link admin-logout-btn">
+                        <i class="bi bi-box-arrow-left"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+
+                <a class="admin-nav-link" th:href="@{/}">
+                    <i class="bi bi-globe2"></i>
+                    <span>Public Site</span>
+                </a>
+            </div>
+        </aside>
+    </div>
+
+    <div th:fragment="adminTopbar">
+        <div class="admin-topbar justify-content-between">
+            <input class="admin-search" type="text" placeholder="Type to search">
+
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-muted small">Admin</span>
+                <span class="admin-avatar">A</span>
             </div>
         </div>
-    </nav>
+    </div>
 </body>
 
 </html>
