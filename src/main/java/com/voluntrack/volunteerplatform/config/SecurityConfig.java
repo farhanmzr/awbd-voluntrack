@@ -10,6 +10,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.voluntrack.volunteerplatform.security.CustomLoginSuccessHandler;
 import com.voluntrack.volunteerplatform.security.CustomUserDetailsService;
 
+import jakarta.servlet.DispatcherType;
+
 @Configuration
 public class SecurityConfig {
 
@@ -36,8 +38,19 @@ public class SecurityConfig {
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/", "/login", "/register", "/events/**", "/css/**", "/js/**",
-                                                                "/images/**")
+                                                .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR)
+                                                .permitAll()
+                                                .requestMatchers(
+                                                                "/",
+                                                                "/login",
+                                                                "/register",
+                                                                "/events/**",
+                                                                "/error",
+                                                                "/error/**",
+                                                                "/css/**",
+                                                                "/js/**",
+                                                                "/images/**",
+                                                                "/webjars/**")
                                                 .permitAll()
                                                 .requestMatchers("/h2-console/**").permitAll()
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")
