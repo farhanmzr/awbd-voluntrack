@@ -16,6 +16,15 @@ spring:
   thymeleaf:
     cache: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+
 logging:
   level:
     root: INFO

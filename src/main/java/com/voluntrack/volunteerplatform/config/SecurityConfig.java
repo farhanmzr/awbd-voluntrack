@@ -47,6 +47,8 @@ public class SecurityConfig {
                                                                 "/events/**",
                                                                 "/error",
                                                                 "/error/**",
+                                                                "/actuator/health",
+                                                                "/actuator/info",
                                                                 "/css/**",
                                                                 "/js/**",
                                                                 "/images/**",
