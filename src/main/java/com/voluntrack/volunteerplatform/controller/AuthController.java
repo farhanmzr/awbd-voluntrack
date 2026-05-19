@@ -38,7 +38,7 @@ public class AuthController {
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("registerRequest", new RegisterRequest());
-        return "register";
+        return "auth/register";
     }
 
     @PostMapping("/register")
@@ -61,7 +61,7 @@ public class AuthController {
         }
 
         if (bindingResult.hasErrors()) {
-            return "register";
+            return "auth/register";
         }
 
         Role userRole = roleRepository.findByName("USER")
