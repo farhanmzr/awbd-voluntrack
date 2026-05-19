@@ -25,4 +25,6 @@ public interface RegistrationService {
     List<Registration> findByUserId(Long userId);
 
     Page<Registration> findByStatus(RegistrationStatus status, Pageable pageable);
+
+    boolean hasUserRegisteredForEvent(Long userId, Long eventId);
 }

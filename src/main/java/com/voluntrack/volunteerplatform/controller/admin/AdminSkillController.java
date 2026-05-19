@@ -1,4 +1,4 @@
-package com.voluntrack.volunteerplatform.controller;
+package com.voluntrack.volunteerplatform.controller.admin;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;

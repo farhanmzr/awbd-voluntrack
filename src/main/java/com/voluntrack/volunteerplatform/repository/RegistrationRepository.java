@@ -20,4 +20,6 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
     Page<Registration> findByStatus(RegistrationStatus status, Pageable pageable);
     
     boolean existsByEventId(Long eventId);
+
+    boolean existsByUserIdAndEventId(Long userId, Long eventId);
 }

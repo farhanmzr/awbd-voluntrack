@@ -5,79 +5,133 @@
 
 <body>
 
-    <div th:replace="~{fragments/admin-navbar :: adminNavbar}"></div>
+    <div class="admin-shell">
+        <div th:replace="~{fragments/admin-navbar :: adminSidebar}"></div>
 
-    <div class="container py-4">
-        <div class="mb-4">
-            <h1 class="mb-1">Admin Dashboard</h1>
-            <p class="text-muted">Overview of the Volunteer Management Platform.</p>
-        </div>
+        <main class="admin-content">
+            <div th:replace="~{fragments/admin-navbar :: adminTopbar}"></div>
 
-        <div class="row g-4 mb-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <h6 class="text-muted">Total Events</h6>
-                        <h2 th:text="${totalEvents}">0</h2>
+            <div class="admin-main">
+                <div class="mb-4">
+                    <h6 class="text-muted mb-1">Hey Admin - here’s what’s happening today</h6>
+                    <h1 class="fw-bold mb-0">Dashboard Overview</h1>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6 col-xl-3">
+                        <div class="card admin-stat-card">
+                            <div class="card-body">
+                                <div class="admin-stat-label">Total Events</div>
+                                <h2 class="admin-stat-value" th:text="${totalEvents}">0</h2>
+                                <small class="text-success">Managed activities</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xl-3">
+                        <div class="card admin-stat-card">
+                            <div class="card-body">
+                                <div class="admin-stat-label">Pending Registrations</div>
+                                <h2 class="admin-stat-value" th:text="${pendingRegistrations}">0</h2>
+                                <small class="text-warning">Need review</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xl-3">
+                        <div class="card admin-stat-card">
+                            <div class="card-body">
+                                <div class="admin-stat-label">Approved Registrations</div>
+                                <h2 class="admin-stat-value" th:text="${approvedRegistrations}">0</h2>
+                                <small class="text-success">Confirmed participants</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xl-3">
+                        <div class="card admin-stat-card">
+                            <div class="card-body">
+                                <div class="admin-stat-label">Categories</div>
+                                <h2 class="admin-stat-value" th:text="${totalCategories}">0</h2>
+                                <small class="text-muted">Program areas</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <h6 class="text-muted">Pending Registrations</h6>
-                        <h2 th:text="${pendingRegistrations}">0</h2>
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="card admin-panel-card h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div>
+                                        <h5 class="fw-bold mb-1">Quick Management</h5>
+                                        <p class="text-muted mb-0">Access the main admin modules quickly.</p>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <a class="btn btn-outline-success w-100 rounded-4 py-3"
+                                            th:href="@{/admin/events}">
+                                            <i class="bi bi-calendar-event me-2"></i>Manage Events
+                                        </a>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <a class="btn btn-outline-success w-100 rounded-4 py-3"
+                                            th:href="@{/admin/registrations}">
+                                            <i class="bi bi-clipboard-check me-2"></i>Manage Registrations
+                                        </a>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <a class="btn btn-outline-success w-100 rounded-4 py-3"
+                                            th:href="@{/admin/categories}">
+                                            <i class="bi bi-tags me-2"></i>Manage Categories
+                                        </a>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <a class="btn btn-outline-success w-100 rounded-4 py-3"
+                                            th:href="@{/admin/venues}">
+                                            <i class="bi bi-geo-alt me-2"></i>Manage Venues
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <h6 class="text-muted">Approved Registrations</h6>
-                        <h2 th:text="${approvedRegistrations}">0</h2>
-                    </div>
-                </div>
-            </div>
+                    <div class="col-lg-4">
+                        <div class="card admin-panel-card h-100">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3">Platform Summary</h5>
 
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <h6 class="text-muted">Categories</h6>
-                        <h2 th:text="${totalCategories}">0</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                <div class="d-flex justify-content-between py-3 border-bottom">
+                                    <span class="text-muted">Total Venues</span>
+                                    <strong th:text="${totalVenues}">0</strong>
+                                </div>
 
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Quick Actions</h5>
-                        <div class="d-grid gap-2">
-                            <a class="btn btn-outline-primary" th:href="@{/admin/events}">Manage Events</a>
-                            <a class="btn btn-outline-primary" th:href="@{/admin/categories}">Manage Categories</a>
-                            <a class="btn btn-outline-primary" th:href="@{/admin/venues}">Manage Venues</a>
-                            <a class="btn btn-outline-primary" th:href="@{/admin/registrations}">Manage
-                                Registrations</a>
+                                <div class="d-flex justify-content-between py-3 border-bottom">
+                                    <span class="text-muted">Admin Area</span>
+                                    <strong>Active</strong>
+                                </div>
+
+                                <div class="d-flex justify-content-between py-3">
+                                    <span class="text-muted">Public Site</span>
+                                    <strong>Online</strong>
+                                </div>
+
+                                <a class="btn btn-success w-100 rounded-4 mt-3" th:href="@{/admin/events/create}">
+                                    <i class="bi bi-plus-lg me-2"></i>Create New Event
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Additional Info</h5>
-                        <p><strong>Total Venues:</strong> <span th:text="${totalVenues}">0</span></p>
-                        <p class="mb-0">Use the admin panel to manage the platform’s main data and monitor participant
-                            activity.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </main>
     </div>
 
     <div th:replace="~{fragments/footer-scripts :: scripts}"></div>
