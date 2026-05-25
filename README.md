@@ -1,7 +1,14 @@
 # Voluntrack - Volunteer Management Platform
 
+## 🌍 Live Demo
+👉 https://awbd-voluntrack-production.up.railway.app/
+
+---
+
 ## Overview
 The Volunteer Management Platform is a web-based application designed to manage volunteer activities. It allows administrators to create and manage volunteer events, while users can browse available events, join them, and track their participation. The goal of this platform is to simplify how volunteer events are organized and how participants engage with them, all within a structured and user-friendly system.
+
+The application focuses on clean architecture, role-based security, validation, pagination, testing, CI/CD, containerization, and cloud deployment.
 
 ---
 
@@ -19,7 +26,7 @@ The main objective of this project is to build a web database application that:
 ## Target Users
 
 ### Admin
-Admins are responsible for managing all data in the system, including events, categories, venues, users, and registrations.
+Admins are responsible for managing all data in the system, including events, categories, venues, users, skills, and registrations.
 
 ### User
 Users (volunteers) can browse events, join them, and track their participation history.
@@ -28,84 +35,52 @@ Users (volunteers) can browse events, join them, and track their participation h
 
 ## Main Modules
 
-- **Authentication & Authorization**  
-  Handles login, logout, and role-based access control.
+### Authentication & Authorization
+Handles:
+- Login & logout
+- User registration
+- Role-based access control
+- Session management
 
-- **User & Profile Management**  
-  Manages user accounts and volunteer profiles.
+### User & Profile Management
+Manages:
+- User accounts
+- Volunteer profiles
+- Skills selection
+- Participation history
 
-- **Event Management**  
-  Handles creation, update, deletion, and viewing of events.
+### Event Management
+Handles:
+- Event creation
+- Event update
+- Event deletion
+- Event viewing
+- Event filtering & search
 
-- **Registration Management**  
-  Manages event participation and registration status.
+### Registration Management
+Handles:
+- Event participation
+- Registration approval/rejection
+- Participation tracking
 
-- **Category & Venue Management**  
-  Organizes events by category and location.
+### Category & Venue Management
+Organizes volunteer events by:
+- Category
+- Venue
+- Location
 
-- **Dashboard & Monitoring**  
-  Provides a summary view of important data for admin and users.
-
----
-
-## Features
-
-### User Features
-- Register an account
-- Login and logout
-- View event list
-- Search and filter events
-- View event details
-- Join an event
-- Cancel registration
-- View joined events
-- Edit profile
-
-### Admin Features
-- Login and logout
-- Manage events (create, update, delete)
-- Manage categories
-- Manage venues
-- Manage users
-- Manage registrations
-- Approve or reject registrations
-- View participants per event
-- Dashboard overview
-
----
-
-## UI Pages
-
-### Public Pages
-- Home Page
-- Event List Page (with search, filter, pagination, sorting)
-- Event Detail Page
-- Login Page
-- Register Page
-
-### User Pages
-- User Dashboard
-- My Profile Page
-- My Events Page
-- Participation History Page
-
-### Admin Pages
-- Admin Dashboard
-- Manage Events Page
-- Create/Edit Event Page
-- Manage Categories Page
-- Manage Venues Page
-- Manage Users Page
-- Manage Registrations Page
-- Event Participants Page
+### Dashboard & Monitoring
+Provides:
+- Admin dashboard statistics
+- User dashboard overview
+- Monitoring & health endpoints
 
 ---
 
 ## Business Rules
 
 - A user cannot join the same event more than once
-- A user cannot join an event that is already full
-- A user cannot join an event that is closed or completed
+- A user cannot join an event that is already full or closed or completed
 - A user can only cancel registration before the event starts
 - Registration status is managed by the system and admin (pending, approved, rejected, etc.)
 - Only admins can create, edit, or delete events
@@ -176,11 +151,55 @@ Users (volunteers) can browse events, join them, and track their participation h
 
 ## Technology Stack
 
-- **Backend & Frontend**: Spring Boot, Thymeleaf, Bootstrap 5  
-- **Database**: PostgreSQL (development), H2 (testing)  
-- **Security**: Spring Security  
-- **Persistence**: Spring Data JPA, Hibernate  
-- **Testing**: JUnit 5, Mockito  
-- **Build Tool**: Maven or Gradle  
+| Category | Technology |
+|---|---|
+| Backend | Spring Boot |
+| Frontend | Thymeleaf + Bootstrap 5 |
+| Database | PostgreSQL (production), H2 (testing) |
+| Security | Spring Security |
+| Persistence | Spring Data JPA + Hibernate |
+| Testing | JUnit 5 + Mockito |
+| Build Tool | Maven |
+| CI/CD | GitHub Actions |
+| Monitoring | Spring Boot Actuator |
+| Deployment | Railway |
+| Containerization | Docker |
 
 ---
+
+## DevOps & Monitoring
+
+### CI/CD
+GitHub Actions automatically:
+- Builds the project
+- Runs tests
+- Validates pushes & pull requests
+
+### Monitoring
+Spring Boot Actuator endpoints:
+- `/actuator/health`
+- `/actuator/info`
+
+### Containerization
+Docker support is included through a production-ready Dockerfile.
+
+---
+
+## Branch Strategy
+
+- `main` → stable production-ready branch
+- `dev` → active development branch
+
+---
+
+## Setup Instructions
+
+### Prerequisites
+- Java 17+
+- Maven
+- PostgreSQL
+- Docker (optional)
+
+### Clone Repository
+```bash
+git clone <repository-url>
